@@ -83,7 +83,7 @@ def get_google_provider_cfg():
 
 
 @app.route("/")
-def homepage():
+def index():
     if current_user.is_authenticated:
         items = db_helper.fetch_todo(current_user.id)
         return render_template("index.html", items=items)
@@ -101,7 +101,8 @@ def login():
         redirect_uri=request.base_url + "/callback",
         scope=["openid", "email", "profile"],
     )
-    return redirect(request_uri)
+    url = request_uri.replace('http://', 'https://')
+    return redirect(url)
 
 
 @app.route("/login/callback")
@@ -154,11 +155,13 @@ def callback():
     login_user(user)
 
     # Send user back to homepage
-    return redirect(url_for("index"))
+    url = url_for("index").replace('http://', 'https://')
+    return redirect(url)
 
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("index"))
+    url = url_for("index").replace('http://', 'https://')
+    return redirect(url)
