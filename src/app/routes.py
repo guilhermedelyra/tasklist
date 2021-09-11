@@ -11,7 +11,7 @@ from flask_login import (
     logout_user,
 )
 from oauthlib.oauth2 import WebApplicationClient
-from app import User
+from app import User as usr_model
 import json
 
 
@@ -71,7 +71,7 @@ def create():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return usr_model.User.get(user_id)
 
 
 @login_manager.unauthorized_handler
@@ -142,12 +142,12 @@ def callback():
     else:
         return "User email not available or not verified by Google.", 400
 
-    user = User(
+    user = usr_model.User(
         id_=unique_id, name=users_name, email=users_email, profile_pic=picture
     )
 
-    if not User.get(unique_id):
-        User.create(unique_id, users_name, users_email, picture)
+    if not usr_model.User.get(unique_id):
+        usr_model.User.create(unique_id, users_name, users_email, picture)
 
     login_user(user)
 
