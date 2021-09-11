@@ -3,7 +3,7 @@ from app import db
 
 class User(UserMixin):
     def __init__(self, id_, name, email, profile_pic):
-        self.id = id_
+        self.id = str(id_)
         self.name = name
         self.email = email
         self.profile_pic = profile_pic
@@ -11,7 +11,7 @@ class User(UserMixin):
     @staticmethod
     def get(user_id):
         conn = db.connect()
-        user = conn.execute(f"SELECT * FROM users WHERE id = {user_id}").fetchone()
+        user = conn.execute(f"SELECT * FROM users WHERE id = {str(user_id)}").fetchone()
         if not user:
             return None
 
@@ -23,6 +23,6 @@ class User(UserMixin):
     @staticmethod
     def create(id_, name, email, profile_pic):
         conn = db.connect()
-        conn.execute(f"INSERT INTO users (id, name, email, profile_pic) VALUES ({id_}, {name}, {email}, {profile_pic})")
+        conn.execute(f"INSERT INTO users (id, name, email, profile_pic) VALUES ({str(id_)}, {name}, {email}, {profile_pic})")
         conn.commit()
 

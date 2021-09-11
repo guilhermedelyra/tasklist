@@ -2,12 +2,10 @@ from app import db
 import sqlalchemy
 
 def create_tables():
-    create_user = 'CREATE TABLE IF NOT EXISTS "users" ("id" INT PRIMARY KEY, "name" varchar NOT NULL, "email" varchar UNIQUE NOT NULL, "profile_pic" varchar NOT NULL)'
-    create_tasks = 'CREATE TABLE IF NOT EXISTS "tasks" ("id" SERIAL PRIMARY KEY, "task" varchar NOT NULL, "status" varchar, "user_id" INT NOT NULL, CONSTRAINT "fk_user" FOREIGN KEY("user_id") REFERENCES "users"("id"))'
-
     conn = db.connect()
-    conn.execute(create_user)
-    conn.execute(create_tasks)
+    init_sql = open('init.sql')
+    escaped_sql = sqlalchemy.text(init_sql.read())
+    conn.execute(escaped_sql)
     conn.close()
 
 def fetch_todo(user_id) -> dict:
