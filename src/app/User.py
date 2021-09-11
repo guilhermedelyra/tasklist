@@ -12,6 +12,8 @@ class User(UserMixin):
     def get(user_id):
         conn = db.connect()
         user = conn.execute(f"SELECT * FROM users WHERE id = '{user_id}'").fetchone()
+        conn.close()
+
         if not user:
             return None
 
@@ -24,5 +26,5 @@ class User(UserMixin):
     def create(id_, name, email, profile_pic):
         conn = db.connect()
         conn.execute(f"INSERT INTO users (id, name, email, profile_pic) VALUES ('{id_}', '{name}', '{email}', '{profile_pic}')")
-        conn.commit()
+        conn.close()
 
