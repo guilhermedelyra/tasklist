@@ -25,11 +25,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
-@app.before_request
-def force_https():
-    if request.endpoint in app.view_functions and not request.is_secure:
-        return redirect(request.url.replace('http://', 'https://'))
-
 
 @app.route("/delete/<int:task_id>", methods=['POST'])
 def delete(task_id):
@@ -107,8 +102,8 @@ def login():
         redirect_uri=request.base_url + "/callback",
         scope=["openid", "email", "profile"],
     )
-    url = request_uri.replace('http://', 'https://')
-    return redirect(url)
+
+    return redirect(request_uri)
 
 
 @app.route("/login/callback")
@@ -147,27 +142,20 @@ def callback():
     else:
         return "User email not available or not verified by Google.", 400
 
-    # Create a user in our db with the information provided
-    # by Google
     user = User(
         id_=unique_id, name=users_name, email=users_email, profile_pic=picture
     )
 
-    # Doesn't exist? Add to database
     if not User.get(unique_id):
         User.create(unique_id, users_name, users_email, picture)
 
-    # Begin user session by logging the user in
     login_user(user)
 
-    # Send user back to homepage
-    url = url_for("index").replace('http://', 'https://')
-    return redirect(url)
+    return redirect(url_for("index"))
 
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    url = url_for("index").replace('http://', 'https://')
-    return redirect(url)
+    return redirect(url_for("index"))
