@@ -15,6 +15,22 @@ from app import User
 import json
 
 
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
+GOOGLE_DISCOVERY_URL = (
+    "https://accounts.google.com/.well-known/openid-configuration"
+)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+client = WebApplicationClient(GOOGLE_CLIENT_ID)
+
+@app.before_request
+def force_https():
+    if request.endpoint in app.view_functions and not request.is_secure:
+        return redirect(request.url.replace('http://', 'https://'))
+
+
 @app.route("/delete/<int:task_id>", methods=['POST'])
 def delete(task_id):
     """ recieved post requests for entry delete """
@@ -58,20 +74,10 @@ def create():
     return jsonify(result)
 
 
-
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
-GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
-GOOGLE_DISCOVERY_URL = (
-    "https://accounts.google.com/.well-known/openid-configuration"
-)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-client = WebApplicationClient(GOOGLE_CLIENT_ID)
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.get(user_id)
+
 
 @login_manager.unauthorized_handler
 def unauthorized():
