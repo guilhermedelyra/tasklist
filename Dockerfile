@@ -13,13 +13,11 @@ RUN apt-get update && \
 RUN apt-get update && \
     apt-get install -y libpq-dev gcc
 
-COPY poetry.lock pyproject.toml ./
+COPY requirements.txt .
 
 RUN pip install --upgrade pip
-RUN pip install poetry
-RUN poetry config virtualenvs.in-project false
-RUN poetry install
+RUN pip install -r requirements.txt
 
-COPY . ./
+COPY . .
 
-CMD poetry run flask run --host=0.0.0.0
+CMD flask run --host=0.0.0.0
