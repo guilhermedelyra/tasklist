@@ -11,7 +11,6 @@ port = os.environ['POSTGRES_PORT']
 DATABASE_CONNECTION_URI = f'postgresql+psycopg2://{user}:{password}@{host}:{port}/{_database}'
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_CONNECTION_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.app_context().push()
 
