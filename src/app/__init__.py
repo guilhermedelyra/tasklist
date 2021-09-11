@@ -3,6 +3,7 @@ import sqlalchemy
 from flask import Flask
 from dotenv import load_dotenv
 from flask_talisman import Talisman
+from whitenoise import WhiteNoise
 
 load_dotenv()
 
@@ -16,6 +17,7 @@ DATABASE_CONNECTION_URI = f'postgresql+psycopg2://{user}:{password}@{host}:{port
 
 app = Flask(__name__)
 Talisman(app)
+app.wsgi_app = WhiteNoise(app.wsgi_app, root='src/app/static/')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ.get("SECRET_KEY")
 app.app_context().push()
