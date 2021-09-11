@@ -1,6 +1,9 @@
 import os
 import sqlalchemy
 from flask import Flask
+from dotenv import load_dotenv
+
+load_dotenv()
 
 user = os.environ['POSTGRES_USER']
 password = os.environ['POSTGRES_PASSWORD']
