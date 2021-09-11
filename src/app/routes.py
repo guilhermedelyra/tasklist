@@ -88,7 +88,10 @@ def homepage():
         items = db_helper.fetch_todo(current_user.id)
         return render_template("index.html", items=items)
     else:
-        return '<a class="button" href="/login">Google Login</a>'
+        return '''
+        <meta name="google-site-verification" content="1cXOav0Vae6C1TdQDPuXMkJZ8QPob7IjgfgaTomp5bA" />
+        <a class="button" href="/login">Google Login</a>'
+        '''
 
 
 @app.route("/login")
