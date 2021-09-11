@@ -12,9 +12,6 @@ pluggy
 psycopg2
 py
 pyparsing
-PyQt5
-PyQt5-Qt5
-PyQt5-sip
 pytest
 python-dotenv
 SQLAlchemy
