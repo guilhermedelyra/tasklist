@@ -10,7 +10,7 @@ def create_tables():
 
 def fetch_todo(user_id) -> dict:
     conn = db.connect()
-    query_results = conn.execute(f"Select * from tasks WHERE user_id = {user_id};").fetchall()
+    query_results = conn.execute(f"Select * from tasks WHERE user_id = '{user_id}';").fetchall()
     conn.close()
     todo_list = []
     for result in query_results:
@@ -40,8 +40,7 @@ def update_status_entry(task_id: int, text: str) -> None:
 
 def insert_new_task(text: str) ->  int:
     conn = db.connect()
-    query = 'Insert Into tasks (task, status) VALUES (\'{}\', \'{}\');'.format(
-        text, "Todo")
+    query = f"Insert Into tasks (task, status) VALUES ('{text}', 'Todo');"
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]
