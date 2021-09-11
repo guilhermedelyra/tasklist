@@ -1,4 +1,12 @@
 from app import db
+import sqlalchemy
+
+def create_tables():
+    conn = db.connect()
+    init_sql = open('init.sql')
+    escaped_sql = sqlalchemy.text(init_sql.read())
+    conn.execute(escaped_sql)
+    conn.close()
 
 def fetch_todo(user_id) -> dict:
     conn = db.connect()
