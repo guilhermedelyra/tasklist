@@ -17,4 +17,3 @@ setuptools==58.0.4
 waitress
 flask-talisman
 pytest
-whitenoise
