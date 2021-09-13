@@ -31,7 +31,10 @@ $(document).ready(function () {
             url: tID ? '/edit/' + tID : '/create',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'description': $('#task-modal').find('.form-control').val()
+                'description': $('#task-modal').find('.form-control-description').val(),
+                'difficulty': $('#task-modal').find('.form-control-difficulty').val(),
+                'deadline': $('#task-modal').find('.form-control-deadline').val(),
+                'importance': $('#task-modal').find('.form-control-importance').val()
             }),
             success: function (res) {
                 console.log(res.response)

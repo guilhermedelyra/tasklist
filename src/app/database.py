@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime as dt
 
 def fetch_todo() -> dict:
     """Reads all tasks listed in the todo table
@@ -14,7 +15,11 @@ def fetch_todo() -> dict:
         item = {
             "id": result[0],
             "task": result[1],
-            "status": result[2]
+            "status": result[2],
+            "added_at": result[3],
+            "difficulty": result[4],
+            "deadline": result[5],
+            "importance": result[6]
         }
         todo_list.append(item)
 
@@ -52,16 +57,16 @@ def update_status_entry(task_id: int, text: str) -> None:
     conn.close()
 
 
-def insert_new_task(text: str) ->  int:
+def insert_new_task(text: str, difficulty, deadline, importance) ->  int:
     """Insert new task to todo table.
     Args:
         text (str): Task description
     Returns: The task ID for the inserted entry
     """
-
+    date = dt.today().strftime('%Y-%m-%d')
     conn = db.connect()
-    query = 'Insert Into tasks (task, status) VALUES (\'{}\', \'{}\');'.format(
-        text, "Todo")
+    query = 'Insert Into tasks (task, status, difficulty, deadline, importance, added_at) VALUES (\'{}\', \'{}\', \'{}\', \'{}\', \'{}\', \'{}\');'.format(
+        text, "Todo", difficulty, importance, deadline, date)
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]

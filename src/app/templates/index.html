@@ -43,7 +43,20 @@
             <div class="modal-body">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="task-form-display">Task</span>
-                    <input type="text" class="form-control" placeholder="Description of task" aria-label="task-name" aria-describedby="basic-addon1">
+                    <input type="text" class="form-control-description" placeholder="Description of task" aria-label="task-name" aria-describedby="basic-addon1">
+                    <br />
+
+                    <span class="input-group-text" id="task-form-display">Difficulty</span>
+                    <input type="text" class="form-control-difficulty" placeholder="Difficulty from 1 (easy) to 10 (hard)" aria-label="task-name" aria-describedby="basic-addon1">
+                    <br />
+
+                    <span class="input-group-text" id="task-form-display">Deadline</span>
+                    <input type="text" class="form-control-deadline" placeholder="Deadline from 1 (short-term) to 10 (long-term)" aria-label="task-name" aria-describedby="basic-addon1">
+                    <br />
+
+                    <span class="input-group-text" id="task-form-display">Importance</span>
+                    <input type="text" class="form-control-importance" placeholder="Importance from 1 (non-important) to 10 (much important)" aria-label="task-name" aria-describedby="basic-addon1">
+                    <br />
                 </div>
             </div>
             <div class="modal-footer">
@@ -63,6 +76,10 @@
         <tr>
             <th class="task-id">#</th>
             <th class="task">Task Name</th>
+            <th>Difficulty</th>
+            <th>Deadline</th>
+            <th>Importance</th>
+            <th>Added At</th>
             <th class="status">Status</th>
             <th class="update">Edit</th>
             <th class="update">Remove</th>
@@ -74,6 +91,10 @@
             <tr>
                 <td>{{item.id}}</td>
                 <td>{{item.task}}</td>
+                <td>{{item.difficulty}}</td>
+                <td>{{item.deadline}}</td>
+                <td>{{item.importance}}</td>
+                <td>{{item.added_at}}</td>
 
                 {% if item.status == "In Progress" %}
                     <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
