@@ -21,8 +21,8 @@ def fetch_todo(user_id) -> dict:
         item = {
             "id": result[0],
             "task": result[1],
-            "status": result[2],
-            "priority": result[3],
+            "priority": result[2],
+            "status": result[3],
             "added_at": result[4],
             "difficulty": result[5],
             "deadline": result[6],
@@ -49,6 +49,7 @@ def insert_new_task(user_id, text: str, difficulty, deadline, importance) ->  in
     conn = db.connect()
     query = "Insert Into tasks (task, priority, status, difficulty, deadline, importance, added_at, user_id)" + \
                     f"VALUES ('{text}', '{priority}', 'Todo', '{difficulty}', '{deadline}', '{importance}', '{date}', '{user_id}');"
+    print(query)
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]
