@@ -30,8 +30,6 @@ client = WebApplicationClient(GOOGLE_CLIENT_ID)
 
 @app.route("/delete/<int:task_id>", methods=['POST'])
 def delete(task_id):
-    """ recieved post requests for entry delete """
-
     try:
         db_helper.remove_task_by_id(task_id)
         result = {'success': True, 'response': 'Removed task'}
@@ -43,8 +41,6 @@ def delete(task_id):
 
 @app.route("/edit/<int:task_id>", methods=['POST'])
 def update(task_id):
-    """ recieved post requests for entry updates """
-
     data = request.get_json()
     valid_fields = ['status', 'task', 'difficulty', 'importance', 'deadline']
     try:
@@ -52,6 +48,9 @@ def update(task_id):
             for field in fields_to_update:
                 db_helper.update_task(field, task_id, data[field])
                 result = {'success': True, 'response': f'{field.title()} Updated'}
+
+            priority = round((data['difficulty'] + (10-data['importance']) + data['deadline']) / 3, 2) * 10
+            db_helper.update_task('priority', task_id, priority)
         else:
             result = {'success': True, 'response': 'Nothing Updated'}
     except:
@@ -62,7 +61,6 @@ def update(task_id):
 
 @app.route("/create", methods=['POST'])
 def create():
-    """ recieves post requests to add new task """
     data = request.get_json()
     db_helper.insert_new_task(current_user.id, data['task'], data['difficulty'], data['deadline'], data['importance'])
     result = {'success': True, 'response': 'Done'}

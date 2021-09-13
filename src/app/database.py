@@ -12,18 +12,21 @@ def create_tables():
 
 def fetch_todo(user_id) -> dict:
     conn = db.connect()
-    query_results = conn.execute(f"Select * from tasks WHERE user_id = '{user_id}';").fetchall()
+    query_results = conn.execute(f"Select * from tasks WHERE user_id = '{user_id}' ORDER BY priority DESC;").fetchall()
     conn.close()
+
     todo_list = []
+    
     for result in query_results:
         item = {
             "id": result[0],
             "task": result[1],
             "status": result[2],
-            "added_at": result[3],
-            "difficulty": result[4],
-            "deadline": result[5],
-            "importance": result[6]
+            "priority": result[3],
+            "added_at": result[4],
+            "difficulty": result[5],
+            "deadline": result[6],
+            "importance": result[7]
         }
         todo_list.append(item)
 
@@ -41,8 +44,10 @@ def update_task(field, task_id: int, text) -> None:
 
 def insert_new_task(user_id, text: str, difficulty, deadline, importance) ->  int:
     date = dt.today().strftime('%Y-%m-%d')
+    priority = round((difficulty + (10-importance) + deadline) / 3, 2) * 10
+
     conn = db.connect()
-    query = f"Insert Into tasks (task, status, difficulty, deadline, importance, added_at, user_id) VALUES ('{text}', 'Todo', '{difficulty}', '{importance}', '{deadline}', '{date}', '{user_id}');"
+    query = f"Insert Into tasks (task, priority, status, difficulty, deadline, importance, added_at, user_id) VALUES ('{text}', '{priority}', 'Todo', '{difficulty}', '{importance}', '{deadline}', '{date}', '{user_id}');"
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]
