@@ -97,7 +97,7 @@
                         <tr class="row100">
                             <td class="column100">{{item.id}}</td>
                             <td class="column100">{{item.task}}</td>
-                            <td class="column100"><b>{{item.priority}}</b></td>
+                            <td class="column100"><b class="priority">{{item.priority}}%</b></td>
                             <td class="column100">{{item.difficulty}}</td>
                             <td class="column100">{{item.deadline}}</td>
                             <td class="column100">{{item.importance}}</td>
@@ -126,6 +126,7 @@
 	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
 	<script src="{{ url_for('static', filename='script/table.js') }}" type="text/javascript"></script>
     <script src="{{ url_for('static', filename='script/modal.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='script/priority.js') }}" type="text/javascript"></script>
 
   </body>
 
