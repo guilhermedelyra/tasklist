@@ -1,130 +1,131 @@
 <!DOCTYPE html>
 
 <html>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" type="text/javascript"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous" type="text/javascript"></script> -->
     <head>
-        <title>Demo: TODO</title>
-
+        <title>Tasklist Bão</title>
+        
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        
         <link rel="icon" href="{{ url_for('static', filename='img/cs.ico') }}">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
-        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" type="text/css">></link>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.css">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/custom.css') }}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.css" type="text/css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/custom.css') }}" type="text/css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/table.css') }}" type="text/css">
 
     </head>
 
-    <body>
-
-    <main role="main" class="container extra-bottom">
-      <h1 class="mt-5">TODO List Demo App</h1>
-      <p><mark>Do it now.</mark></p>
-    </main>
-    
-
-    <div class="container">    
+    <body style="background-color: #fbfbfb;">
         
-        <!-- Button trigger modal -->
-        <div style="text-align: right;">
-        <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Task">Add Task</button>
+    <div class="container">
+        <div class="row justify-content-center">
+            <main role="main" class="container extra-bottom">
+                <h1 class="mt-5">Tasklist Bão</h1>
+                <p><mark><i>priorize suas tarefas.</i></mark></p>
+            </main>
         </div>
 
-        
+        <div class="row">
+            <a class="button" href="/logout">Logout</a>
+            
+            <div style="text-align: right;">
+                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Task">Add Task</button>
+            </div>
+        </div>
+
         <div class="modal fade" id="task-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="Label">Add a task</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="Label">Add a task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
 
-            <div class="modal-body">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="task-form-display">Task</span>
-                    <input type="text" style="width: 100%;" class="form-control-task" placeholder="Task description" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="task-form-display">Difficulty</span>
-                    <input type="text" style="width: 100%;" class="form-control-difficulty" placeholder="Difficulty from 1 (easy) to 10 (hard)" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="task-form-display">Deadline</span>
-                    <input type="text" style="width: 100%;" class="form-control-deadline" placeholder="Deadline from 1 (short-term) to 10 (long-term)" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="task-form-display">Importance</span>
-                    <input type="text" style="width: 100%;" class="form-control-importance" placeholder="Importance from 1 (non-important) to 10 (much important)" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="submit-task" type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            </div>
-        </div>
-        </div>
-
-    </div>
-
-    <!--Todo Table-->
-    <div class="container table-responsive">          
-    <table class="table">
-        <thead>
-        <tr>
-            <th class="task-id">#</th>
-            <th class="task">Task Name</th>
-            <th>Difficulty</th>
-            <th>Deadline</th>
-            <th>Importance</th>
-            <th>Added At</th>
-            <th class="status">Status</th>
-            <th class="update">Edit</th>
-            <th class="update">Remove</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for item in items %}
-            <tr>
-                <td>{{item.id}}</td>
-                <td>{{item.task}}</td>
-                <td>{{item.difficulty}}</td>
-                <td>{{item.deadline}}</td>
-                <td>{{item.importance}}</td>
-                <td>{{item.added_at}}</td>
-
-                {% if item.status == "In Progress" %}
-                    <td><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Todo" %}
-                    <td><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
-                {% if item.status == "Complete" %}
-                    <td><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
-                {%endif%}
-                
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" data-task="{{item.task}}" data-difficulty="{{item.difficulty}}" data-deadline="{{item.deadline}}" data-importance="{{item.importance}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
-            </tr>
-        {% endfor %}
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="task-form-display">Task</span>
+                            <input type="text" style="width: 100%;" class="form-control-task" placeholder="Task description" aria-label="task-name" aria-describedby="basic-addon1">
+                        </div>
         
-        </tbody>
-    </table>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="task-form-display">Difficulty</span>
+                            <input type="text" style="width: 100%;" class="form-control-difficulty" placeholder="Difficulty from 1 (easy) to 10 (hard)" aria-label="task-name" aria-describedby="basic-addon1">
+                        </div>
+        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="task-form-display">Deadline</span>
+                            <input type="text" style="width: 100%;" class="form-control-deadline" placeholder="Deadline from 1 (short-term) to 10 (long-term)" aria-label="task-name" aria-describedby="basic-addon1">
+                        </div>
+        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="task-form-display">Importance</span>
+                            <input type="text" style="width: 100%;" class="form-control-importance" placeholder="Importance from 1 (non-important) to 10 (much important)" aria-label="task-name" aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="submit-task" type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row table100 ver1 m-b-110">
+            <table data-vertable="ver1">
+                <thead>
+                    <tr class="row100 head">
+                        <th class="column100 uid">#</th>
+                        <th class="column100 task">Task Name</th>
+                        <th class="column100 uid">Difficulty</th>
+                        <th class="column100 uid">Deadline</th>
+                        <th class="column100 uid">Importance</th>
+                        <th class="column100 status">Added At</th>
+                        <th class="column100 status">Status</th>
+                        <th class="column100 button">Edit</th>
+                        <th class="column100 button">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr class="row100">
+                            <td class="column100">{{item.id}}</td>
+                            <td class="column100">{{item.task}}</td>
+                            <td class="column100">{{item.difficulty}}</td>
+                            <td class="column100">{{item.deadline}}</td>
+                            <td class="column100">{{item.importance}}</td>
+                            <td class="column100">{{item.added_at}}</td>
+
+                            {% if item.status == "In Progress" %}
+                                <td class="column100"><button type="button" class="btn btn-outline-warning btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
+                            {%endif%}
+                            {% if item.status == "Todo" %}
+                                <td class="column100"><button type="button" class="btn btn-outline-secondary btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
+                            {%endif%}
+                            {% if item.status == "Complete" %}
+                                <td class="column100"><button type="button" class="btn btn-outline-success btn-sm state" data-source="{{item.id}}">{{item.status}}</button></td>
+                            {%endif%}
+                            
+                            <td class="column100"><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.id}}" data-task="{{item.task}}" data-difficulty="{{item.difficulty}}" data-deadline="{{item.deadline}}" data-importance="{{item.importance}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
+            
+                            <td class="column100"><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
-
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery-3.6.0.min.js') }}" type="text/javascript"></script>
+	<script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.min.js') }}" type="text/javascript"></script>
+	<script src="{{ url_for('static', filename='script/table.js') }}" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='script/modal.js') }}" type="text/javascript"></script>
 
   </body>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
 
 </html>

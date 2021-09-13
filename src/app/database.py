@@ -1,14 +1,18 @@
 from app import db
 from datetime import datetime as dt
+import sqlalchemy
 
-def fetch_todo() -> dict:
-    """Reads all tasks listed in the todo table
-    Returns:
-        A list of dictionaries
-    """
-
+def create_tables():
     conn = db.connect()
-    query_results = conn.execute("Select * from tasks;").fetchall()
+    init_sql = open('init.sql')
+    escaped_sql = sqlalchemy.text(init_sql.read())
+    conn.execute(escaped_sql)
+    conn.close()
+
+
+def fetch_todo(user_id) -> dict:
+    conn = db.connect()
+    query_results = conn.execute(f"Select * from tasks WHERE user_id = '{user_id}';").fetchall()
     conn.close()
     todo_list = []
     for result in query_results:
@@ -35,18 +39,10 @@ def update_task(field, task_id: int, text) -> None:
     conn.close()
 
 
-def update_status_entry(task_id: int, text: str) -> None:
-    conn = db.connect()
-    query = 'Update tasks set status = \'{}\' where id = {};'.format(text, task_id)
-    conn.execute(query)
-    conn.close()
-
-
-def insert_new_task(text: str, difficulty, deadline, importance) ->  int:
+def insert_new_task(user_id, text: str, difficulty, deadline, importance) ->  int:
     date = dt.today().strftime('%Y-%m-%d')
     conn = db.connect()
-    query = 'Insert Into tasks (task, status, difficulty, deadline, importance, added_at) VALUES (\'{}\', \'{}\', \'{}\', \'{}\', \'{}\', \'{}\');'.format(
-        text, "Todo", difficulty, importance, deadline, date)
+    query = f"Insert Into tasks (task, status, difficulty, deadline, importance, added_at, user_id) VALUES ('{text}', 'Todo', '{difficulty}', '{importance}', '{deadline}', '{date}', '{user_id}');"
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]
@@ -57,7 +53,6 @@ def insert_new_task(text: str, difficulty, deadline, importance) ->  int:
 
 
 def remove_task_by_id(task_id: int) -> None:
-    """ remove entries based on task ID """
     conn = db.connect()
     query = 'Delete From tasks where id={};'.format(task_id)
     conn.execute(query)
