@@ -38,9 +38,9 @@ def update_status_entry(task_id: int, text: str) -> None:
     conn.close()
 
 
-def insert_new_task(text: str) ->  int:
+def insert_new_task(text: str, user_id) ->  int:
     conn = db.connect()
-    query = f"Insert Into tasks (task, status) VALUES ('{text}', 'Todo');"
+    query = f"Insert Into tasks (task, status, user_id) VALUES ('{text}', 'Todo', '{user_id}');"
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]
