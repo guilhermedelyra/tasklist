@@ -44,7 +44,7 @@ def update_task(field, task_id: int, text) -> None:
 
 def insert_new_task(user_id, text: str, difficulty, deadline, importance) ->  int:
     date = dt.today().strftime('%Y-%m-%d')
-    priority = round((difficulty + (10-importance) + deadline) / 3, 2) * 10
+    priority = round((int(difficulty) + (10-int(importance)) + int(deadline)) / 3, 2) * 10
 
     conn = db.connect()
     query = f"Insert Into tasks (task, priority, status, difficulty, deadline, importance, added_at, user_id) VALUES ('{text}', '{priority}', 'Todo', '{difficulty}', '{importance}', '{deadline}', '{date}', '{user_id}');"
