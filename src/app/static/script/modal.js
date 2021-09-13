@@ -4,7 +4,11 @@ $(document).ready(function () {
     $('#task-modal').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget) // Button that triggered the modal
         const taskID = button.data('source') // Extract info from data-* attributes
-        const content = button.data('content') // Extract info from data-* attributes
+        const task = button.data('task');
+        const difficulty = button.data('difficulty');
+        const deadline = button.data('deadline');
+        const importance = button.data('importance');
+
 
         const modal = $(this)
         if (taskID === 'New Task') {
@@ -15,8 +19,11 @@ $(document).ready(function () {
             $('#task-form-display').attr('taskID', taskID)
         }
 
-        if (content) {
-            modal.find('.form-control').val(content);
+        if (task) {
+            modal.find('.form-control-task').val(task);
+            modal.find('.form-control-difficulty').val(difficulty);
+            modal.find('.form-control-deadline').val(deadline);
+            modal.find('.form-control-importance').val(importance);
         } else {
             modal.find('.form-control').val('');
         }
@@ -25,13 +32,15 @@ $(document).ready(function () {
 
     $('#submit-task').click(function () {
         const tID = $('#task-form-display').attr('taskID');
-        console.log($('#task-modal').find('.form-control').val())
         $.ajax({
             type: 'POST',
             url: tID ? '/edit/' + tID : '/create',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'description': $('#task-modal').find('.form-control').val()
+                'task': $('#task-modal').find('.form-control-task').val(),
+                'difficulty': $('#task-modal').find('.form-control-difficulty').val(),
+                'deadline': $('#task-modal').find('.form-control-deadline').val(),
+                'importance': $('#task-modal').find('.form-control-importance').val()
             }),
             success: function (res) {
                 console.log(res.response)
@@ -59,6 +68,8 @@ $(document).ready(function () {
     });
 
     $('.state').click(function () {
+        console.log("oi hehe");
+
         const state = $(this)
         const tID = state.data('source')
         let new_state = "Todo"

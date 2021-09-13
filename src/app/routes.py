@@ -46,14 +46,12 @@ def update(task_id):
     """ recieved post requests for entry updates """
 
     data = request.get_json()
-
+    valid_fields = ['status', 'task', 'difficulty', 'importance', 'deadline']
     try:
-        if "status" in data:
-            db_helper.update_status_entry(task_id, data["status"])
-            result = {'success': True, 'response': 'Status Updated'}
-        elif "description" in data:
-            db_helper.update_task_entry(task_id, data["description"])
-            result = {'success': True, 'response': 'Task Updated'}
+        if fields_to_update := list(set(data) & set(valid_fields)):
+            for field in fields_to_update:
+                db_helper.update_task(field, task_id, data[field])
+                result = {'success': True, 'response': f'{field.title()} Updated'}
         else:
             result = {'success': True, 'response': 'Nothing Updated'}
     except:
@@ -66,7 +64,7 @@ def update(task_id):
 def create():
     """ recieves post requests to add new task """
     data = request.get_json()
-    db_helper.insert_new_task(data['description'], current_user.id)
+    db_helper.insert_new_task(current_user.id, data['task'], data['difficulty'], data['deadline'], data['importance'])
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 

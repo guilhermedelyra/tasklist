@@ -1,4 +1,5 @@
 from app import db
+from datetime import datetime as dt
 import sqlalchemy
 
 def create_tables():
@@ -7,6 +8,7 @@ def create_tables():
     escaped_sql = sqlalchemy.text(init_sql.read())
     conn.execute(escaped_sql)
     conn.close()
+
 
 def fetch_todo(user_id) -> dict:
     conn = db.connect()
@@ -17,30 +19,30 @@ def fetch_todo(user_id) -> dict:
         item = {
             "id": result[0],
             "task": result[1],
-            "status": result[2]
+            "status": result[2],
+            "added_at": result[3],
+            "difficulty": result[4],
+            "deadline": result[5],
+            "importance": result[6]
         }
         todo_list.append(item)
 
     return todo_list
 
 
-def update_task_entry(task_id: int, text: str) -> None:
+def update_task(field, task_id: int, text) -> None:
     conn = db.connect()
-    query = 'Update tasks set task = \'{}\' where id = {};'.format(text, task_id)
+    content = f"'{text}'" if isinstance(text, str) else int(text)
+
+    query = f"Update tasks set {field} = {content} where id = {task_id};"
     conn.execute(query)
     conn.close()
 
 
-def update_status_entry(task_id: int, text: str) -> None:
+def insert_new_task(user_id, text: str, difficulty, deadline, importance) ->  int:
+    date = dt.today().strftime('%Y-%m-%d')
     conn = db.connect()
-    query = 'Update tasks set status = \'{}\' where id = {};'.format(text, task_id)
-    conn.execute(query)
-    conn.close()
-
-
-def insert_new_task(text: str, user_id) ->  int:
-    conn = db.connect()
-    query = f"Insert Into tasks (task, status, user_id) VALUES ('{text}', 'Todo', '{user_id}');"
+    query = f"Insert Into tasks (task, status, difficulty, deadline, importance, added_at, user_id) VALUES ('{text}', 'Todo', '{difficulty}', '{importance}', '{deadline}', '{date}', '{user_id}');"
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]
