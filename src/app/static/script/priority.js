@@ -7,6 +7,7 @@ $(document).ready(function () {
     }
 
     $(".priority").each(function() {
+        console.log($(this));
         var val = parseFloat($(this).textContent);
         $(this).css({'color': hsl_col_perc(val)})
     });
