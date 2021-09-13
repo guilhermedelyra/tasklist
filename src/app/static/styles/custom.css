@@ -38,13 +38,6 @@ hr {
     vertical-align: middle;
 }
 
-/* bootstrap modifications */
-.container {
-    width: auto;
-    max-width: 680px;
-    padding: 0 15px;
-}
-
 .extra-bottom {
     padding-bottom: 2em;
 }

@@ -74,34 +74,6 @@ iframe {
 
 /*//////////////////////////////////////////////////////////////////
 [ Table ]*/
-
-.limiter {
-    width: 100%;
-    margin: 0 auto;
-}
-
-.container-table100 {
-    width: 100%;
-    min-height: 100vh;
-    background: #d1d1d1;
-
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 33px 30px;
-}
-
-.wrap-table100 {
-    width: 1300px;
-}
-
-/*//////////////////////////////////////////////////////////////////
-[ Table ]*/
 table {
     width: 100%;
     background-color: #fff;
@@ -132,7 +104,40 @@ th, td {
     padding-bottom: 14px;
 }
 
-
+.row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.justify-content-center {
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+}
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto; 
+}
+@media (min-width: 576px) {
+.container {
+    max-width: 540px; } }
+@media (min-width: 768px) {
+.container {
+    max-width: 720px; } }
+@media (min-width: 992px) {
+.container {
+    max-width: 960px; } }
+@media (min-width: 1200px) {
+.container {
+    max-width: 1140px; } 
+}
   /*==================================================================
   [ Ver1 ]*/
   
