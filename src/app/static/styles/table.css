@@ -189,11 +189,11 @@ th.status {
 }
 
 .table100.ver1 .row100:hover {
-    background-color: #0E0E52;
+    background-color: #f2f2f2;
 }
 
 .table100.ver1 .hov-column-ver1 {
-    background-color: #0E0E52;
+    background-color: #f2f2f2;
 }
 
 .table100.ver1 .hov-column-head-ver1 {
@@ -202,7 +202,7 @@ th.status {
 
 .table100.ver1 .row100 td:hover {
     background-color: #D4D4FF;
-    color: #fbfbfb;
+    color: #0E0E52;
 }
 
 .m-b-110 {margin-bottom: 110px;}
