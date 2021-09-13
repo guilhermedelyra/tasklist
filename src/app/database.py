@@ -21,7 +21,7 @@ def fetch_todo(user_id) -> dict:
         item = {
             "id": result[0],
             "task": result[1],
-            "priority": result[2],
+            "priority": round(result[2], 2),
             "status": result[3],
             "added_at": result[4],
             "difficulty": result[5],

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    function hsl_col_perc(percent, start=240, end=0) {
+    function hsl_col_perc(percent, start=120, end=0) {
         var a = percent / 100,
         b = (end - start) * a,
         c = b + start;
