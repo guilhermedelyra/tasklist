@@ -26,43 +26,23 @@ def fetch_todo() -> dict:
     return todo_list
 
 
-def update_task_entry(task_id: int, text: str) -> None:
-    """Updates task description based on given `task_id`
-    Args:
-        task_id (int): Targeted task_id
-        text (str): Updated description
-    Returns:
-        None
-    """
-
+def update_task(field, task_id: int, text) -> None:
     conn = db.connect()
-    query = 'Update tasks set task = \'{}\' where id = {};'.format(text, task_id)
+    content = f"'{text}'" if isinstance(text, str) else int(text)
+
+    query = f"Update tasks set {field} = {content} where id = {task_id};"
     conn.execute(query)
     conn.close()
 
 
 def update_status_entry(task_id: int, text: str) -> None:
-    """Updates task status based on given `task_id`
-    Args:
-        task_id (int): Targeted task_id
-        text (str): Updated status
-    Returns:
-        None
-    """
-
     conn = db.connect()
-    print('@@@@@@@@@@\n\n'+text+'\n\n@@@@@@@@@@@')
     query = 'Update tasks set status = \'{}\' where id = {};'.format(text, task_id)
     conn.execute(query)
     conn.close()
 
 
 def insert_new_task(text: str, difficulty, deadline, importance) ->  int:
-    """Insert new task to todo table.
-    Args:
-        text (str): Task description
-    Returns: The task ID for the inserted entry
-    """
     date = dt.today().strftime('%Y-%m-%d')
     conn = db.connect()
     query = 'Insert Into tasks (task, status, difficulty, deadline, importance, added_at) VALUES (\'{}\', \'{}\', \'{}\', \'{}\', \'{}\', \'{}\');'.format(
