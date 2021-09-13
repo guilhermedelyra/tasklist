@@ -47,7 +47,8 @@ def insert_new_task(user_id, text: str, difficulty, deadline, importance) ->  in
     priority = round((int(difficulty) + (10-int(importance)) + int(deadline)) / 3, 2) * 10
 
     conn = db.connect()
-    query = f"Insert Into tasks (task, priority, status, difficulty, deadline, importance, added_at, user_id) VALUES ('{text}', '{priority}', 'Todo', '{difficulty}', '{importance}', '{deadline}', '{date}', '{user_id}');"
+    query = "Insert Into tasks (task, priority, status, difficulty, deadline, importance, added_at, user_id)" + \
+                    f"VALUES ('{text}', '{priority}', 'Todo', '{difficulty}', '{deadline}', '{importance}', '{date}', '{user_id}');"
     conn.execute(query)
     query_results = conn.execute("SELECT currval(pg_get_serial_sequence('tasks','id'));")
     query_results = [x for x in query_results]

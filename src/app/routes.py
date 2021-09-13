@@ -49,7 +49,7 @@ def update(task_id):
                 db_helper.update_task(field, task_id, data[field])
                 result = {'success': True, 'response': f'{field.title()} Updated'}
 
-            priority = round((data['difficulty'] + (10-data['importance']) + data['deadline']) / 3, 2) * 10
+            priority = round((int(data['difficulty']) + (10-int(data['importance'])) + int(data['deadline'])) / 3, 2) * 10
             db_helper.update_task('priority', task_id, priority)
         else:
             result = {'success': True, 'response': 'Nothing Updated'}
@@ -85,6 +85,7 @@ def get_google_provider_cfg():
 def index():
     if current_user.is_authenticated:
         items = db_helper.fetch_todo(current_user.id)
+        print(items)
         return render_template("index.html", items=items)
     else:
         return render_template("unauthorized.html")
