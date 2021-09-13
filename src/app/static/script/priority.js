@@ -7,7 +7,7 @@ $(document).ready(function () {
     }
 
     $(".priority").each(function() {
-        var val = parseFloat(this.textContent);
-        this.css({'color': hsl_col_perc(val)})
+        var val = parseFloat($(this).textContent);
+        $(this).css({'color': hsl_col_perc(val)})
     });
 });
